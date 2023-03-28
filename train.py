@@ -100,4 +100,5 @@ train_dataloader = DataLoader(train_dataset, batch_size=128, shuffle=True)
 # Train the model
 mps_device = torch.device("mps")
 autoencoder = Autoencoder()
+autoencoder = load_model(autoencoder, 'model.pth')
 train(autoencoder, train_dataloader, num_epochs=100)
