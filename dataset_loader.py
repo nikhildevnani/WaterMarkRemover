@@ -1,9 +1,8 @@
 import os
+
 import torch
 import torchvision.transforms.functional as F
-import torchvision.transforms as transforms
 from PIL import Image
-import matplotlib.pyplot as plt
 
 
 class CustomImageDataset(torch.utils.data.Dataset):
@@ -31,7 +30,6 @@ class CustomImageDataset(torch.utils.data.Dataset):
             with_annotation_image = self.transform(with_annotation_image)
             without_annotation_image = self.transform(without_annotation_image)
 
-
         # Return the image and its index
         return with_annotation_image, without_annotation_image, idx
 
@@ -42,7 +40,7 @@ class CustomImageDataset(torch.utils.data.Dataset):
         without_annotations_filenames = set(os.listdir(without_annotations))
         common_files = without_annotations_filenames.intersection(with_annotations_filenames)
         total_files = with_annotations_filenames.union(without_annotations_filenames)
-        uncommon_files = total_files-common_files
+        uncommon_files = total_files - common_files
         for file in uncommon_files:
             with_annotation_path = os.path.join(with_annotations, file)
             without_annotation_path = os.path.join(without_annotations, file)

@@ -1,13 +1,15 @@
+import os
+import random
+import time
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from torch.utils.data import DataLoader
 import torchvision.transforms as transforms
-import torchvision.datasets as datasets
+from torch.utils.data import DataLoader
+
 from dataset_loader import CustomImageDataset
-import time
-import os
-import random
+
 
 # Define the autoencoder model
 class Autoencoder(nn.Module):
@@ -43,11 +45,14 @@ class Autoencoder(nn.Module):
         x = self.decoder(x)
         return x
 
+
 # Define the training function
 output_dir = "output_images"
 os.makedirs(output_dir, exist_ok=True)
+
+
 def save_images(inputs, outputs, epoch, batch_number):
-    random_index = random.randint(0,len(inputs)-1)
+    random_index = random.randint(0, len(inputs) - 1)
     input_image, output_image = inputs[random_index], outputs[random_index]
     input_image = transforms.functional.to_pil_image(input_image)
     output_image = transforms.functional.to_pil_image(output_image)
@@ -56,9 +61,11 @@ def save_images(inputs, outputs, epoch, batch_number):
     input_image.save(input_file_name)
     output_image.save(output_file_name)
 
+
 def save_model(model, filepath):
     """Save PyTorch model to disk"""
     torch.save(model.state_dict(), filepath)
+
 
 def load_model(model, filepath):
     """Load PyTorch model from disk"""
@@ -87,7 +94,8 @@ def train(model, dataloader, num_epochs):
         epoch_time = end_time - start_time
         if epoch % 10 == 0:
             save_model(model, 'model.pth')
-        print('Epoch [{}/{}], Loss: {:.4f}, Time: {:.4f}s'.format(epoch+1, num_epochs, running_loss/len(dataloader), epoch_time))
+        print('Epoch [{}/{}], Loss: {:.4f}, Time: {:.4f}s'.format(epoch + 1, num_epochs, running_loss / len(dataloader),
+                                                                  epoch_time))
     save_model(model, 'model.pth')
 
 
